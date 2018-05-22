@@ -1,20 +1,152 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
+  <div class = 'jumbotron'>
   <h1>
     Welcome to {{ title }}!
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+</div>
 
+
+
+<div class = "container-fluid " style="margin-bottom: 5px;">
+<div class="row">
+
+
+        <!-- the smaller colomn -->
+       
+          <div class="col-sm-4 smallCol">
+
+          <!-- Online users -->
+
+          <div *ngIf='gotUser'>
+            <h3>Online Users :</h3>
+            <ul>
+            <div *ngFor='let item of userArray '>
+                <div class='online' *ngIf="room==item.room && user!=item.user"> 
+                
+                  <li><strong class='user'>{{item.user}}</strong> <button class='btn btn-success' style="margin-left:10px;" (click)='privateChat(item.user)'>Send Chat Request</button></li>
+              </div>
+             
+               
+            </div>
+          </ul>
+          </div>
+
+
+          <!-- submit leave -->
+            <div *ngIf='!gotUser'>
+            <div class="form-group">
+              <label for="UserName">User Name</label>
+              <input type="text" #user (blur)="getUser(user.value); " class="form-control"/>
+            </div>
+            <label for="roomInput" >Choose room</label>
+            <select name ="roomInput" class="form-control" #room (blur)="getRoom(room.value);">
+              <option value = "room1">Room1</option>
+              <option value = "room2">Room2</option>
+              <option value = "room3">Room3</option>
+            </select>
+            <button class="btn btn-default" (click)="dataRecieved(); join();" type="button">Join chat</button>
+           
+          </div>
+          <button class="btn btn-default" (click)="leave(); gotUser=false;">Leave</button>
+         
+         
+          </div>
+        
+       <!-- the large colomn -->
+        
+          <div class="col-sm-8  largeCol" >
+         
+            <div *ngIf='!gotUser'  class="alert alert-warning">
+              <strong>Please</strong> enter your name and select a room to join
+
+            </div>
+
+
+
+            <div *ngIf='gotUser'style="height: 400px;overflow-y: auto;">
+
+             <div *ngFor='let item of messageArray ' >
+              <div class = 'alert alert-info'> 
+              <span ><strong>{{item.user}} : </strong>{{item.message}}</span>
+            </div>
+             </div>
+              <div class="input-group textBox">
+                  <input type="text" class="form-control" #msg (blur) = "getMsg(msg.value)">
+                  <span class="input-group-btn">
+                       <button class="btn btn-default" (click)="sendMessage()" type="button">Send</button>
+                  </span>
+               </div>
+              </div>
+
+
+              </div>
+        </div>
+      </div>
+   
+<!-- For personal chat -->
+
+
+
+<div class="container">
+    <!-- Button to Open the Modal -->
+  <button type="button" id="modalClick"  data-toggle="modal" data-target="#myModal" style="display: none" >
+  </button>
+
+  <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Hi {{user}}</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          {{sender}} wants to chat!! 
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel Request</button>
+          <button type="button" (click)='acceptChatRequest()' class="btn btn-secondary" data-dismiss="modal">Chat</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+      
+
+
+
+
+
+      <!-- <div *ngIf='personalChat==true'  class='container-fluid'>
+        <div class = row>
+     <div *ngFor="let item of personalChatter; let i = 'index'">
+     <div [ngStyle]="{'background-color':i%2===0 ?'#ff8b4f':'#c88900'}"  class="col-sm-4 personalCol" >
+
+
+        <h3 class="text-center" style="margin: 0px; background-color: black;color: white;">{{item}}</h3>
+       
+        <div class="input-group textBox">
+            <input type="text" class="form-control" #msg (blur) = "getMsg(msg.value)">
+            <span class="input-group-btn">
+                 <button class="btn btn-default" (click)="sendMessage()" type="button">Send</button>
+            </span>
+         </div>
+
+
+
+     </div>
+     </div>
+
+  
+      </div>
+      </div> -->

@@ -1,0 +1,42 @@
+    .textBox{
+        position: absolute;
+        bottom: 0px;
+        margin-right: 20px;
+
+    }
+
+.largeCol{
+    padding-top:10px; 
+    background-color: #76C4AE;
+    min-height: 430px;
+   
+}
+
+
+.smallCol{
+    padding-top:10px;
+    background-color: #DDB0A0;
+    min-height: 430px;
+}
+
+.alert{
+    display: inline-block;
+}
+.online{
+    display: inline-block;
+   
+}
+
+.user{
+    margin-left: 5px;
+}
+.well{
+    display: inline-block;
+    
+}
+
+.personalCol{
+  min-height: 250px;
+  margin-bottom: 10px;
+  /* background-color: #DDB0A0; */
+}
